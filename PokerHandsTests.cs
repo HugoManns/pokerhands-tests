@@ -2,6 +2,13 @@ using Xunit;
 
 namespace CardGame.Test
 {
+
+    //NOTE: Inte uppdaterad med nya fixade pokerhands
+    // Gamla versionen
+
+
+
+
     public class CardTests
     {
         [Fact]
