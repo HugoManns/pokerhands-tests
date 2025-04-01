@@ -104,8 +104,7 @@ namespace CardGame.Test
             // Arrange & Act
             DeckOfCards deck = new DeckOfCards();
 
-            // We can't directly check the cards due to shuffling, but we can test initial properties
-            // Reflection might be needed to check internal state if absolutely necessary
+            
             var deckType = typeof(DeckOfCards);
             var cardsField = deckType.GetField("cards", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var cards = (List<Card>)cardsField?.GetValue(deck);
@@ -223,7 +222,7 @@ namespace CardGame.Test
         }
     }
 
-public class PokerHandTests
+    public class PokerHandTests
     {
         // Test methods for individual hand identification
 
@@ -470,7 +469,6 @@ public class PokerHandTests
         [Fact]
         public void TestCheckHands_RoyalFlushVsFourOfAKind_RoyalFlushWins()
         {
-            // Arrange (Note: The current implementation might not correctly identify Royal Flush)
             var royalFlushHand = new Hand(new List<Card>
         {
             new Card('♣', 'T'),
@@ -493,7 +491,6 @@ public class PokerHandTests
             var result = CompareHands.CheckHands(royalFlushHand, fourOfAKindHand);
 
             // Assert
-            // Note: This test might fail due to the current implementation's Royal Flush detection
             Assert.Equal(royalFlushHand, result.winningHand);
             Assert.Equal("Royal Flush", result.handType);
         }
@@ -554,7 +551,36 @@ public class PokerHandTests
             var result = CompareHands.CheckHands(hand1, hand2);
 
             // Assert
-            // Note: The current implementation might not handle perfect ties correctly
+            Assert.NotNull(result.winningHand);
+        }
+    
+    
+        [Fact]
+        public void TestCheckHandsTwoBiggerPar()
+        {
+            // Arrange
+            var hand1 = new Hand(new List<Card>
+        {
+            new Card('♣', '5'),
+            new Card('♠', '5'),
+            new Card('♠', '4'),
+            new Card('♣', '7'),
+            new Card('♠', '9')
+        });
+
+            var hand2 = new Hand(new List<Card>
+        {
+            new Card('♣', '6'),
+            new Card('♠', '6'),
+            new Card('♠', '4'),
+            new Card('♣', '7'),
+            new Card('♠', '9')
+        });
+
+            // Act
+            var result = CompareHands.CheckHands(hand1, hand2);
+
+            // Assert
             Assert.NotNull(result.winningHand);
         }
     }
